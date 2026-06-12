@@ -1,0 +1,11 @@
+.DS_Store
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+/tmp/
+*.log
+
+# local trash
+TRASH/
+TRASH-FILES.md
