@@ -20,6 +20,8 @@
 
 <p align="center">Built and maintained by <a href="https://github.com/dualform-labs">dualform-labs</a> · <a href="#english">English</a> · <a href="#日本語">日本語</a></p>
 
+<p align="center"><sub>See also <a href="https://github.com/dualform-labs/spec-skill"><strong>spec-skill</strong></a> — front-load every decision into one spec file before the agent builds.</sub></p>
+
 ---
 
 ## At a glance
