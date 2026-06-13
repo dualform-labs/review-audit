@@ -15,7 +15,7 @@
 <p align="center">
   A read-only, all-axis code-audit <strong>skill for <a href="https://docs.claude.com/en/docs/claude-code">Claude Code</a></strong>.<br>
   The everyday, low-token tier. For the exhaustive, benchmarked tier, see
-  <a href="https://github.com/dualform-labs/review-audit-pro"><code>review-audit-pro</code></a>.
+  <a href="https://github.com/dualform-labs/review-audit-pro-v1"><code>review-audit-pro</code></a>.
 </p>
 
 <p align="center">Built and maintained by <a href="https://github.com/dualform-labs">dualform-labs</a> · <a href="#english">English</a> · <a href="#日本語">日本語</a></p>
@@ -62,7 +62,7 @@ It is deliberately cheap. When a change needs more than one pass can give, it **
 
 ### When to use which tier
 
-| | **review-audit** (this repo) | [**review-audit-pro**](https://github.com/dualform-labs/review-audit-pro) |
+| | **review-audit** (this repo) | [**review-audit-pro**](https://github.com/dualform-labs/review-audit-pro-v1) |
 |---|---|---|
 | cost | low — single pass, no sub-agents | high — multi-agent fan-out |
 | use for | everyday "before I say done" checks | release gates, high-risk changes, publishing |
@@ -87,7 +87,7 @@ Then in Claude Code: `/review-audit [target]`, or let the agent invoke it before
 
 ### What it does not claim
 
-It does not carry a benchmark. Single-pass detection is model-dependent and lighter than the pro pipeline; if you need *proven* detection power or the lowest false-positive rate, use [`review-audit-pro`](https://github.com/dualform-labs/review-audit-pro), whose numbers are measured and reproducible. This tier optimizes for **honesty per token**: cheap, read-only, and structurally unable to report a PASS it didn't verify.
+It does not carry a benchmark. Single-pass detection is model-dependent and lighter than the pro pipeline; if you need *proven* detection power or the lowest false-positive rate, use [`review-audit-pro`](https://github.com/dualform-labs/review-audit-pro-v1), whose numbers are measured and reproducible. This tier optimizes for **honesty per token**: cheap, read-only, and structurally unable to report a PASS it didn't verify.
 
 ### License
 
@@ -103,14 +103,14 @@ It does not carry a benchmark. Single-pass detection is model-dependent and ligh
 
 ```mermaid
 flowchart TD
-    T["target — read-only snapshot"] --> A["audit the 6 axes yourself<br/>one pass, no fan-out"]
-    A --> SK["inline self-skepticism<br/>re-check each finding, drop the unprovable"]
-    SK --> COV["coverage table<br/>audited / partial / not-audited / n-a"]
-    COV --> J{"verdict"}
-    J -->|"a high exists"| FAIL["FAIL — must-fix"]
-    J -->|"every axis audited, high 0"| PASS["PASS"]
-    J -->|"an axis left unaudited"| INC["INCOMPLETE"]
-    INC -.->|"release / high-risk /<br/>need detection proof"| PRO["escalate to review-audit-pro"]
+    T["対象 — read-only スナップショット"] --> A["6観点を自分で当てる<br/>1パス・fan-out なし"]
+    A --> SK["インラインの自己懐疑<br/>各 finding を再点検し、証明できないものは外す"]
+    SK --> COV["カバレッジ表<br/>監査済 / 部分 / 未監査 / 対象外"]
+    COV --> J{"判定"}
+    J -->|"high が1件以上"| FAIL["FAIL — must-fix"]
+    J -->|"全観点 監査済・high 0"| PASS["PASS"]
+    J -->|"未監査の観点あり"| INC["INCOMPLETE"]
+    INC -.->|"リリース / 高リスク /<br/>検出力の実証が要る"| PRO["review-audit-pro にエスカレーション"]
 ```
 
 - **6観点を1パスで**: 正しさ/バグ · 配線(anti-Potemkin: 作ったが呼ばれない・dead code)· セキュリティ · テスト実効性 · spec 準拠 · 回帰(テスト/ビルドを実際に走らせる)。
@@ -123,7 +123,7 @@ flowchart TD
 
 ### どちらの階層を使うか
 
-| | **review-audit**(本リポ) | [**review-audit-pro**](https://github.com/dualform-labs/review-audit-pro) |
+| | **review-audit**(本リポ) | [**review-audit-pro**](https://github.com/dualform-labs/review-audit-pro-v1) |
 |---|---|---|
 | コスト | 低 — 1パス・サブエージェントなし | 高 — 多エージェント fan-out |
 | 用途 | 日常の「done と言う前」チェック | リリースゲート・高リスク変更・公開 |
@@ -148,7 +148,7 @@ cp -r review-audit/skills/review-audit ~/.claude/skills/
 
 ### 主張しないこと
 
-ベンチマークは持ちません。1パスの検出はモデル依存で、pro パイプラインより軽い。*実証された* 検出力や最低の偽陽性率が要るなら、計測・再現可能な数値を持つ [`review-audit-pro`](https://github.com/dualform-labs/review-audit-pro) を使ってください。この階層は **トークンあたりの正直さ** に最適化しています — 安く、read-only で、検証していない PASS を構造的に報告できません。
+ベンチマークは持ちません。1パスの検出はモデル依存で、pro パイプラインより軽い。*実証された* 検出力や最低の偽陽性率が要るなら、計測・再現可能な数値を持つ [`review-audit-pro`](https://github.com/dualform-labs/review-audit-pro-v1) を使ってください。この階層は **トークンあたりの正直さ** に最適化しています — 安く、read-only で、検証していない PASS を構造的に報告できません。
 
 ### ライセンス
 
